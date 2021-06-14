@@ -5,4 +5,5 @@ import posts from './reducers/posts';
 export default combineReducers({
 	courses,
 	posts,
+	
 });

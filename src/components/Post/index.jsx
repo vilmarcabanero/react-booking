@@ -8,7 +8,7 @@ const Posts = () => {
 	// console.log('Line 8',posts)
 
 	return (
-		<div>
+		<S.Container>
 			<Row>
 				<S.Column>
 					<S.Title>Posts</S.Title>
@@ -31,7 +31,7 @@ const Posts = () => {
 					</S.Column>
 				))}
 			</Row>
-		</div>
+		</S.Container>
 	);
 };
 
