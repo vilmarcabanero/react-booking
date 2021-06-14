@@ -2,8 +2,8 @@ import React, { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { getCourses } from 'store/actions/courses';
 import { getPosts } from 'store/actions/posts';
-import Course from 'components/Course/index.redux';
-import Posts from 'components/Post'
+import Course from 'components/Course/index';
+// import Posts from 'components/Post'
 import Banner from 'components/Banner';
 import Highlights from 'components/Highlights';
 import { Container } from 'react-bootstrap';
@@ -60,7 +60,7 @@ const App = () => {
 			<Banner data={data} />
 			<Highlights />
 			<Course courses={courses} />
-			<Posts />
+			{/* <Posts /> */}
 		</Container>
 	);
 };
