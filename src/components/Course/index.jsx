@@ -1,25 +1,33 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Card, Col, Row, Button } from 'react-bootstrap';
 import * as S from './styles';
-import Swal from 'sweetalert2';
-import withReactContent from 'sweetalert2-react-content';
+// import Swal from 'sweetalert2';
+// import withReactContent from 'sweetalert2-react-content';
 
 const Course = ({ course }) => {
 	const [count, setCount] = useState(0);
-	const [seat, setSeat] = useState(30);
-	const [isActive, setIsActive] = useState(true)
+	const [seats, setSeats] = useState(30);
+	const [isActive, setIsActive] = useState(true);
 
 	const { name, description, price } = course;
-	
-	const MySwal = withReactContent(Swal);
+
+	// const MySwal = withReactContent(Swal);
+
+	useEffect(() => {
+		if (seats === 0) {
+			setIsActive(false);
+		}
+	}, [seats]);
 
 	const enroll = () => {
-		if (seat > 0) {
-			setSeat(prevSeat => prevSeat - 1);
-			setCount(prevCount => prevCount + 1);
-		} else {
-			setSeat(0);
-			setIsActive(false)
+		setSeats(prevSeat => prevSeat - 1);
+		setCount(prevCount => prevCount + 1);
+
+		// if (seat === 1) {
+		// 	setIsActive(false);
+		// }
+
+		/*
 			MySwal.fire({
 				title: <p>Hello World</p>,
 				footer: 'Copyright 2018',
@@ -30,13 +38,8 @@ const Course = ({ course }) => {
 				},
 			}).then(() => {
 				return MySwal.fire(<p>Not enough seats.</p>);
-			});
-		}
+			}); */
 	};
-
-	
-
-
 
 	return (
 		<S.CardHighlight>
@@ -50,11 +53,19 @@ const Course = ({ course }) => {
 					{count === 0 ? 'No Enrollees Yet.' : `Enrollees: ${count}`}
 				</Card.Text>
 				<Card.Text>
-					{seat === 0 ? 'No More Seates Available' : `Seats available: ${seat}`}
+					{seats === 0
+						? 'No More Seates Available'
+						: `Seats available: ${seats}`}
 				</Card.Text>
-				<Button variant='primary' onClick={enroll}>
-					Enroll
-				</Button>
+				{isActive ? (
+					<Button variant='primary' onClick={enroll}>
+						Enroll
+					</Button>
+				) : (
+					<Button variant='primary' disabled>
+						Enroll
+					</Button>
+				)}
 			</Card.Body>
 		</S.CardHighlight>
 	);

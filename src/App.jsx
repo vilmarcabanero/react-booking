@@ -8,6 +8,7 @@ import courses from 'data/courses.data';
 import { Container } from 'react-bootstrap';
 
 import Home from 'pages/home'
+import Register from 'pages/register'
 
 const App = () => {
 	const dispatch = useDispatch();
@@ -33,10 +34,7 @@ const App = () => {
 	return (
 		<Container>
 
-			<Home />
-			{coursesComponents}
-			{/* <Posts /> */}
-			{/* <Course /> */}
+			<Register />
 		</Container>
 	);
 };
