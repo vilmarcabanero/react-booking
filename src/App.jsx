@@ -7,7 +7,7 @@ import Course from 'components/Course/index';
 import courses from 'data/courses.data';
 import { Container } from 'react-bootstrap';
 
-import Home from 'pages/home';
+// import Home from 'pages/home';
 import Register from 'pages/Register/index';
 import Login from 'pages/Login/index';
 
