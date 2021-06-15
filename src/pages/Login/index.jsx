@@ -14,8 +14,12 @@ export default function Register() {
 	const [error, setError] = useState('');
 
 	const [isActive, setIsActive] = useState(true);
+	const [isLoading, setIsLoading] = useState(false)
 
 	const MySwal = withReactContent(Swal);
+
+	const url = 'https://vc-booking-api.herokuapp.com/api';
+	// const urlLocal = 'http://localhost:4000/api'
 
 	useEffect(() => {
 		if (email !== '' && password !== '' && password.length > 8) {
@@ -39,18 +43,47 @@ export default function Register() {
 	const loginUser = e => {
 		e.preventDefault();
 		// alert('Thank you for logging in!');
-		MySwal.fire({
-			title: <p>Hello World</p>,
-			footer: 'Copyright 2018',
-			didOpen: () => {
-				// `MySwal` is a subclass of `Swal`
-				//   with all the same instance & static methods
-				MySwal.clickConfirm();
+		// MySwal.fire({
+		// 	title: <p>Hello World</p>,
+		// 	footer: 'Copyright 2018',
+		// 	didOpen: () => {
+		// 		// `MySwal` is a subclass of `Swal`
+		// 		//   with all the same instance & static methods
+		// 		MySwal.clickConfirm();
+		// 	},
+		// }).then(() => {
+		// 	return MySwal.fire(<p>Thank you for logging in!</p>);
+		// });
+
+		fetch(`${url}/users/login`, {
+			method: 'POST',
+			headers: {
+				'Content-Type': 'application/json',
 			},
-		}).then(() => {
-			return MySwal.fire(<p>Thank you for logging in!</p>);
-		});
-		clear();
+			body: JSON.stringify({
+				email: email,
+				password: password,
+			}),
+		})
+			.then(res => res.json())
+			.then(data => {
+				console.log(data);
+
+				if (data.isSuccessful) {
+					Swal.fire({
+						icon: 'success',
+						title: 'Logged In Successfully.',
+						text: data.message,
+					});
+					clear();
+				} else {
+					Swal.fire({
+						icon: 'error',
+						title: 'Login failed.',
+						text: data.message,
+					});
+				}
+			});
 	};
 
 	const clear = () => {

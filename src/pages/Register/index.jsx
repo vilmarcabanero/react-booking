@@ -19,6 +19,8 @@ export default function Register() {
 	const [isActive, setIsActive] = useState(true);
 
 	const MySwal = withReactContent(Swal);
+	const url = 'https://vc-booking-api.herokuapp.com/api';
+	// const urlLocal = 'http://localhost:4000/api';
 
 	// useEffect(() => {
 	// 	if (
@@ -95,18 +97,52 @@ export default function Register() {
 
 	const registerUser = e => {
 		e.preventDefault();
-		MySwal.fire({
-			title: <p>Hello World</p>,
-			footer: 'Copyright 2018',
-			didOpen: () => {
-				// `MySwal` is a subclass of `Swal`
-				//   with all the same instance & static methods
-				MySwal.clickConfirm();
+		// MySwal.fire({
+		// 	title: <p>Hello World</p>,
+		// 	footer: 'Copyright 2018',
+		// 	didOpen: () => {
+		// 		// `MySwal` is a subclass of `Swal`
+		// 		//   with all the same instance & static methods
+		// 		MySwal.clickConfirm();
+		// 	},
+		// }).then(() => {
+		// 	return MySwal.fire(<p>Thank you for registering!</p>);
+		// });
+
+		fetch(`${url}/users`, {
+			method: 'POST',
+			headers: {
+				'Content-Type': 'application/json',
 			},
-		}).then(() => {
-			return MySwal.fire(<p>Thank you for registering!</p>);
-		});
-		clear();
+			body: JSON.stringify({
+				firstName: firstName,
+				lastName: lastName,
+				email: email,
+				password: password,
+				confirmPassword: confirmPassword,
+				mobileNo: mobileNo,
+			}),
+		})
+			.then(res => res.json())
+			.then(data => {
+				console.log(data);
+
+				if (data.isSuccessful) {
+					Swal.fire({
+						icon: 'success',
+						title: 'Registered Successfully.',
+						text: data.message,
+					});
+					clear();
+				} else {
+					Swal.fire({
+						icon: 'error',
+						title: 'Failed to register.',
+						text: data.message,
+					});
+				}
+			})
+			.catch(err => console.log(err.message));
 	};
 
 	const clear = () => {
