@@ -1,38 +1,69 @@
-import React, { useState, useEffect, Fragment } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Form, Button } from 'react-bootstrap';
 
-const Register = () => {
-	const [test1, setTest1] = useState(0);
-	const [test2, setTest2] = useState(0);
-
-	useEffect(() => {
-		console.log(
-			'I am from the useEffect and I will run on initial render and when test2 state is updated.'
-		);
-	});
-
-	const sample = () => {
-		setTest1(test1 + 1);
-	};
-
-	const sample2 = () => {
-		setTest2(test2 + 1);
-	};
-
-	console.log('Runs whenever test1 state is updated.');
+export default function Register() {
+	const [firstName, setFirstName] = useState('');
+	const [lastName, setLastName] = useState('');
+	const [mobileNo, setMobileNo] = useState('');
+	const [email, setEmail] = useState('');
+	const [password, setPassword] = useState('');
+	const [confirmPassword, setConfirmPw] = useState('');
 
 	return (
-		<Fragment>
-			<h1>From the Register Page</h1>
-			<Button variant='primary' onClick={sample}>
-				Update test 1
-			</Button>
-			<br />
-			<Button variant='warning' onClick={sample2}>
-				Update test 2
-			</Button>
-		</Fragment>
+		<>
+			<div>
+				<h3 className='text-center'>Register</h3>
+				<Form>
+					<Form.Group>
+						<Form.Label>First Name</Form.Label>
+						<Form.Control
+							type='text'
+							placeholder='Enter First Name'
+							value={firstName}
+							onChange={e => setFirstName(e.target.value)}
+						/>
+					</Form.Group>
+					<Form.Group>
+						<Form.Label>Last Name</Form.Label>
+						<Form.Control
+							type='text'
+							placeholder='Enter Last Name'
+							value={lastName}
+						/>
+					</Form.Group>
+					<Form.Group>
+						<Form.Label>Email</Form.Label>
+						<Form.Control type='text' placeholder='Enter Email' value={email} />
+					</Form.Group>
+					<Form.Group>
+						<Form.Label>Mobile Number</Form.Label>
+						<Form.Control
+							type='number'
+							placeholder='Enter 11-digit mobile number'
+							value={mobileNo}
+						/>
+					</Form.Group>
+					<Form.Group>
+						<Form.Label>Password</Form.Label>
+						<Form.Control
+							type='password'
+							placeholder='Enter Password'
+							value={password}
+						/>
+					</Form.Group>
+					<Form.Group>
+						<Form.Label>Confirm Password</Form.Label>
+						<Form.Control
+							type='password'
+							placeholder='Confirm Password'
+							value={confirmPassword}
+						/>
+					</Form.Group>
+					<Button variant='primary' type='submit'>
+						Submit
+					</Button>
+				</Form>
+			</div>
+		</>
 	);
-};
-
-export default Register;
+}

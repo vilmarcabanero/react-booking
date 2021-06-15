@@ -7,8 +7,9 @@ import Course from 'components/Course/index';
 import courses from 'data/courses.data';
 import { Container } from 'react-bootstrap';
 
-import Home from 'pages/home'
-import Register from 'pages/register'
+import Home from 'pages/home';
+import Register from 'pages/Register/index';
+import Login from 'pages/Login/index';
 
 const App = () => {
 	const dispatch = useDispatch();
@@ -16,7 +17,6 @@ const App = () => {
 		dispatch(getCourses());
 		dispatch(getPosts());
 	}, [dispatch]);
-
 
 	let myBookingApp = {
 		title: 'Entropiya',
@@ -33,7 +33,7 @@ const App = () => {
 
 	return (
 		<Container>
-
+			<Login />
 			<Register />
 		</Container>
 	);
