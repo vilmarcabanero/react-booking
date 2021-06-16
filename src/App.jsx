@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Switch, Route } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { getCourses } from 'store/actions/courses';
@@ -15,12 +15,24 @@ import RegisterPage from 'pages/RegisterPage/index';
 import LoginPage from 'pages/LoginPage/index';
 import CoursesPage from 'pages/CoursesPage';
 
+import { UserProvider } from 'context/user';
+
 const App = () => {
+	const [user, setUser] = useState({
+		email: localStorage.getItem('email'),
+		isAdmin: Boolean(localStorage.getItem('isAdmin')),
+		token: localStorage.getItem('token'),
+	});
 	const dispatch = useDispatch();
 	useEffect(() => {
 		dispatch(getCourses());
 		dispatch(getPosts());
 	}, [dispatch]);
+
+
+	// useEffect(() => {
+	// 	setUserEmail(localStorage.getItem('email'));
+	// }, []);
 
 	let myBookingApp = {
 		title: 'Entropiya',
@@ -29,12 +41,12 @@ const App = () => {
 		label: 'See Our Courses',
 	};
 
-	console.log();
+	// console.log(user.isAdmin);
 
 	return (
-		<>
+		<UserProvider value={{ user, setUser }}>
 			<AppNavBarMUI />
-			{/* <AppNavBarBoot /> */}
+			{/* <AppNavBarBoot  /> */}
 			<Container>
 				{/* <Home />
 			<LoginPage />
@@ -42,11 +54,12 @@ const App = () => {
 				<Switch>
 					<Route exact path='/' component={HomePage} />
 					<Route exact path='/courses' component={CoursesPage} />
+
 					<Route exact path='/login' component={LoginPage} />
 					<Route exact path='/register' component={RegisterPage} />
 				</Switch>
 			</Container>
-		</>
+		</UserProvider>
 	);
 };
 

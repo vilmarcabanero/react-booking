@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 // import { Form } from 'react-bootstrap';
 import { TextField, Button, Card } from '@material-ui/core';
 import useStyles from './styles';
@@ -6,18 +6,20 @@ import Swal from 'sweetalert2';
 import withReactContent from 'sweetalert2-react-content';
 import validator from 'validator';
 import { motion } from 'framer-motion';
+import { Redirect } from 'react-router-dom';
+import UserContext from 'context/user';
 
 export default function LoginPage() {
 	const classes = useStyles();
 
+	const { user, setUser } = useContext(UserContext);
+
 	const [email, setEmail] = useState('');
 	const [password, setPassword] = useState('');
 	const [error, setError] = useState('');
-
 	const [isActive, setIsActive] = useState(true);
-	const [isLoading, setIsLoading] = useState(false);
 
-	const MySwal = withReactContent(Swal);
+	const [willRedirect, setWillRedirect] = useState(false);
 
 	const url = 'https://vc-booking-api.herokuapp.com/api';
 	// const urlLocal = 'http://localhost:4000/api'
@@ -68,9 +70,10 @@ export default function LoginPage() {
 		})
 			.then(res => res.json())
 			.then(data => {
-				console.log(data);
+				// console.log(data);
 
-				localStorage.setItem('token', data.accessToken)
+				localStorage.setItem('token', data.accessToken);
+				console.log('Token from login page, data.accessToken', user.token);
 
 				if (data.isSuccessful) {
 					Swal.fire({
@@ -87,23 +90,33 @@ export default function LoginPage() {
 					});
 				}
 
-				fetch(`${url}/users`, {
-					headers: {
-						Authorization: `Bearer ${data.accessToken}`,
-					},
-				})
-					.then(res => res.json())
-					.then(data => {
-						// console.log(data);
-						localStorage.setItem('email', data.email);
-						localStorage.setItem('isAdmin', data.isAdmin)
-						
-						// console.log(localStorage.getItem('email'));
-						// console.log(localStorage.getItem('isAdmin'));
-						// console.log(localStorage.getItem('token'))
+				if (data.isSuccessful) {
+					fetch(`${url}/users`, {
+						headers: {
+							Authorization: `Bearer ${data.accessToken}`,
+						},
 					})
-					.catch(err => console.log(err));
-			});
+						.then(res => res.json())
+						.then(data => {
+							// console.log(data);
+
+							localStorage.setItem('email', data.email);
+							localStorage.setItem('isAdmin', data.isAdmin);
+
+							setUser({
+								token: localStorage.getItem('token'),
+								email: data.email,
+								isAdmin: data.isAdmin,
+							});
+
+							setWillRedirect(true);
+						})
+						.catch(err => console.log(err));
+				} else {
+					setWillRedirect(false);
+				}
+			})
+			.catch(err => console.log(err));
 	};
 
 	const clear = () => {
@@ -111,7 +124,9 @@ export default function LoginPage() {
 		setPassword('');
 	};
 
-	return (
+	return willRedirect ? (
+		<Redirect to='/courses' />
+	) : (
 		<motion.div
 			initial={{ opacity: 0 }}
 			animate={{ opacity: 1 }}
