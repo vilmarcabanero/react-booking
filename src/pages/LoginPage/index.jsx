@@ -5,8 +5,9 @@ import useStyles from './styles';
 import Swal from 'sweetalert2';
 import withReactContent from 'sweetalert2-react-content';
 import validator from 'validator';
+import { motion } from 'framer-motion';
 
-export default function Register() {
+export default function LoginPage() {
 	const classes = useStyles();
 
 	const [email, setEmail] = useState('');
@@ -14,7 +15,7 @@ export default function Register() {
 	const [error, setError] = useState('');
 
 	const [isActive, setIsActive] = useState(true);
-	const [isLoading, setIsLoading] = useState(false)
+	const [isLoading, setIsLoading] = useState(false);
 
 	const MySwal = withReactContent(Swal);
 
@@ -69,6 +70,8 @@ export default function Register() {
 			.then(data => {
 				console.log(data);
 
+				localStorage.setItem('token', data.accessToken)
+
 				if (data.isSuccessful) {
 					Swal.fire({
 						icon: 'success',
@@ -83,6 +86,23 @@ export default function Register() {
 						text: data.message,
 					});
 				}
+
+				fetch(`${url}/users`, {
+					headers: {
+						Authorization: `Bearer ${data.accessToken}`,
+					},
+				})
+					.then(res => res.json())
+					.then(data => {
+						// console.log(data);
+						localStorage.setItem('email', data.email);
+						localStorage.setItem('isAdmin', data.isAdmin)
+						
+						// console.log(localStorage.getItem('email'));
+						// console.log(localStorage.getItem('isAdmin'));
+						// console.log(localStorage.getItem('token'))
+					})
+					.catch(err => console.log(err));
 			});
 	};
 
@@ -92,56 +112,63 @@ export default function Register() {
 	};
 
 	return (
-		<div className='text-center'>
-			<Card className={classes.card}>
-				<form className={classes.form} onSubmit={loginUser}>
-					<h3 className={classes.title}>Login</h3>
-					<TextField
-						type='email'
-						size='small'
-						required
-						variant='outlined'
-						label='Enter Email'
-						value={email}
-						onChange={e => setEmail(e.target.value)}
-					/>
+		<motion.div
+			initial={{ opacity: 0 }}
+			animate={{ opacity: 1 }}
+			exit={{ opacity: 0 }}
+			transition={{ duration: 1 }}
+		>
+			<div className='text-center'>
+				<Card className={classes.card}>
+					<form className={classes.form} onSubmit={loginUser}>
+						<h3 className={classes.title}>Login</h3>
+						<TextField
+							type='email'
+							size='small'
+							required
+							variant='outlined'
+							label='Enter Email'
+							value={email}
+							onChange={e => setEmail(e.target.value)}
+						/>
 
-					<TextField
-						type='password'
-						size='small'
-						required
-						variant='outlined'
-						label='Enter Password'
-						value={password}
-						onChange={e => setPassword(e.target.value)}
-					/>
+						<TextField
+							type='password'
+							size='small'
+							required
+							variant='outlined'
+							label='Enter Password'
+							value={password}
+							onChange={e => setPassword(e.target.value)}
+						/>
 
-					{isActive ? (
-						<Button
-							className={classes.button}
-							variant='contained'
-							color='primary'
-							type='submit'
-						>
-							Submit
-						</Button>
-					) : (
-						<Button
-							className={classes.button}
-							variant='contained'
-							color='primary'
-							type='submit'
-							disabled
-						>
-							Submit
-						</Button>
-					)}
-				</form>
+						{isActive ? (
+							<Button
+								className={classes.button}
+								variant='contained'
+								color='primary'
+								type='submit'
+							>
+								Submit
+							</Button>
+						) : (
+							<Button
+								className={classes.button}
+								variant='contained'
+								color='primary'
+								type='submit'
+								disabled
+							>
+								Submit
+							</Button>
+						)}
+					</form>
 
-				<div className={classes.errorContainer}>
-					{!isActive && <p className={classes.error}>{error}</p>}
-				</div>
-			</Card>
-		</div>
+					<div className={classes.errorContainer}>
+						{!isActive && <p className={classes.error}>{error}</p>}
+					</div>
+				</Card>
+			</div>
+		</motion.div>
 	);
 }

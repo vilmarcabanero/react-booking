@@ -1,10 +1,11 @@
+// import courses from 'data/courses.data';
 import React, { useState, useEffect } from 'react';
 import { Card, Col, Row, Button } from 'react-bootstrap';
 import * as S from './styles';
 // import Swal from 'sweetalert2';
 // import withReactContent from 'sweetalert2-react-content';
 
-const Course = ({ course }) => {
+const Course = ({ course, id }) => {
 	const [count, setCount] = useState(0);
 	const [seats, setSeats] = useState(30);
 	const [isActive, setIsActive] = useState(true);
@@ -18,6 +19,21 @@ const Course = ({ course }) => {
 			setIsActive(false);
 		}
 	}, [seats]);
+
+	const url = 'https://vc-booking-api.herokuapp.com/api';
+
+	useEffect(() => {
+		fetch(`${url}/courses/active`)
+			.then(res => res.json())
+			.then(data => {
+				// setActiveCourses(data);
+				console.log(data.length);
+
+				const currentCourse = data.filter(course => course.id === Number(id));
+				console.log(currentCourse);
+			})
+			.catch(err => console.log(err));
+	}, []);
 
 	const enroll = () => {
 		setSeats(prevSeat => prevSeat - 1);
@@ -54,7 +70,7 @@ const Course = ({ course }) => {
 				</Card.Text>
 				<Card.Text>
 					{seats === 0
-						? 'No More Seates Available'
+						? 'No More Seats Available'
 						: `Seats available: ${seats}`}
 				</Card.Text>
 				{isActive ? (

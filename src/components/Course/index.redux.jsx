@@ -26,7 +26,7 @@ const Courses = () => {
 					/>
 				) : (
 					courses.map(course => (
-						<Col key={course._id} xs={12} md={4}>
+						<Col key={course._id} >
 							<S.CardHighlight>
 								<Card.Body>
 									<Card.Title>

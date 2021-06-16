@@ -5,7 +5,9 @@ import useStyles from './styles';
 import Swal from 'sweetalert2';
 import withReactContent from 'sweetalert2-react-content';
 import validator from 'validator';
-export default function Register() {
+import { motion } from 'framer-motion';
+
+export default function RegisterPage() {
 	const classes = useStyles();
 
 	const [firstName, setFirstName] = useState('');
@@ -155,96 +157,103 @@ export default function Register() {
 	};
 
 	return (
-		<div className='text-center'>
-			<Card className={classes.card}>
-				<h3>Register</h3>
-				<form className={classes.root} onSubmit={registerUser}>
-					<TextField
-						type='text'
-						size='small'
-						required
-						variant='outlined'
-						label='Enter First Name'
-						value={firstName}
-						onChange={e => setFirstName(e.target.value)}
-					/>
+		<motion.div
+			initial={{ opacity: 0 }}
+			animate={{ opacity: 1 }}
+			exit={{ opacity: 0 }}
+			transition={{ duration: 1 }}
+		>
+			<div className='text-center'>
+				<Card className={classes.card}>
+					<h3>Register</h3>
+					<form className={classes.root} onSubmit={registerUser}>
+						<TextField
+							type='text'
+							size='small'
+							required
+							variant='outlined'
+							label='Enter First Name'
+							value={firstName}
+							onChange={e => setFirstName(e.target.value)}
+						/>
 
-					<TextField
-						type='text'
-						size='small'
-						required
-						variant='outlined'
-						label='Enter Last Name'
-						value={lastName}
-						onChange={e => setLastName(e.target.value)}
-					/>
+						<TextField
+							type='text'
+							size='small'
+							required
+							variant='outlined'
+							label='Enter Last Name'
+							value={lastName}
+							onChange={e => setLastName(e.target.value)}
+						/>
 
-					<TextField
-						type='email'
-						size='small'
-						required
-						variant='outlined'
-						label='Enter Email'
-						value={email}
-						onChange={e => setEmail(e.target.value)}
-					/>
+						<TextField
+							type='email'
+							size='small'
+							required
+							variant='outlined'
+							label='Enter Email'
+							value={email}
+							onChange={e => setEmail(e.target.value)}
+						/>
 
-					<TextField
-						type='number'
-						size='small'
-						required
-						variant='outlined'
-						label='Enter 11-digit mobile number'
-						value={mobileNo}
-						onChange={e => setMobileNo(e.target.value)}
-					/>
+						<TextField
+							type='number'
+							size='small'
+							required
+							variant='outlined'
+							label='Enter 11-digit mobile number'
+							value={mobileNo}
+							onChange={e => setMobileNo(e.target.value)}
+						/>
 
-					<TextField
-						type='password'
-						size='small'
-						required
-						variant='outlined'
-						label='Enter Password'
-						value={password}
-						onChange={e => setPassword(e.target.value)}
-					/>
+						<TextField
+							type='password'
+							size='small'
+							required
+							variant='outlined'
+							label='Enter Password'
+							value={password}
+							onChange={e => setPassword(e.target.value)}
+						/>
 
-					<TextField
-						type='password'
-						size='small'
-						required
-						variant='outlined'
-						label='Confirm Password'
-						value={confirmPassword}
-						onChange={e => setConfirmPw(e.target.value)}
-					/>
+						<TextField
+							type='password'
+							size='small'
+							required
+							variant='outlined'
+							label='Confirm Password'
+							value={confirmPassword}
+							onChange={e => setConfirmPw(e.target.value)}
+						/>
 
-					{isActive ? (
-						<Button
-							className={classes.button}
-							variant='contained'
-							color='primary'
-							type='submit'
-						>
-							Submit
-						</Button>
-					) : (
-						<Button
-							className={classes.button}
-							variant='contained'
-							color='primary'
-							type='submit'
-							disabled
-						>
-							Submit
-						</Button>
-					)}
-				</form>
+						{isActive ? (
+							<Button
+								className={classes.button}
+								variant='contained'
+								color='primary'
+								type='submit'
+							>
+								Submit
+							</Button>
+						) : (
+							<Button
+								className={classes.button}
+								variant='contained'
+								color='primary'
+								type='submit'
+								disabled
+							>
+								Submit
+							</Button>
+						)}
+					</form>
 
-				<div className={classes.errorContainer}>
-					{!isActive && <p className={classes.error}>{error}</p>}
-				</div>
-			</Card>
-		</div>
+					<div className={classes.errorContainer}>
+						{!isActive && <p className={classes.error}>{error}</p>}
+					</div>
+				</Card>
+			</div>
+		</motion.div>
 	);
 }

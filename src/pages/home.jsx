@@ -1,8 +1,7 @@
 import React from 'react';
 import Banner from 'components/Banner';
 import Highlights from 'components/Highlights';
-import Swal from 'sweetalert2'
-
+import { motion } from 'framer-motion';
 
 const Home = () => {
 	let data = {
@@ -11,12 +10,17 @@ const Home = () => {
 		motto: 'Opportunities for everyone, everywhere.',
 		label: 'View Our Courses',
 	};
-  
+
 	return (
-		<div>
+		<motion.div
+			initial={{ opacity: 0 }}
+			animate={{ opacity: 1 }}
+			exit={{ opacity: 0 }}
+			transition={{ duration: 1 }}
+		>
 			<Banner data={data} />
 			<Highlights />
-		</div>
+		</motion.div>
 	);
 };
 

@@ -1,4 +1,5 @@
 import React, { useEffect } from 'react';
+import { Switch, Route } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { getCourses } from 'store/actions/courses';
 import { getPosts } from 'store/actions/posts';
@@ -7,9 +8,12 @@ import Course from 'components/Course/index';
 import courses from 'data/courses.data';
 import { Container } from 'react-bootstrap';
 
-// import Home from 'pages/home';
-import Register from 'pages/Register/index';
-import Login from 'pages/Login/index';
+import AppNavBarMUI from 'components/AppNavBar';
+import AppNavBarBoot from 'components/AppNavBar/index.boot';
+import HomePage from 'pages/home';
+import RegisterPage from 'pages/RegisterPage/index';
+import LoginPage from 'pages/LoginPage/index';
+import CoursesPage from 'pages/CoursesPage';
 
 const App = () => {
 	const dispatch = useDispatch();
@@ -25,17 +29,24 @@ const App = () => {
 		label: 'See Our Courses',
 	};
 
-	let coursesComponents = courses.map(course => (
-		<Course key={course.id} course={course} />
-	));
-
 	console.log();
 
 	return (
-		<Container>
-			<Login />
-			<Register />
-		</Container>
+		<>
+			<AppNavBarMUI />
+			{/* <AppNavBarBoot /> */}
+			<Container>
+				{/* <Home />
+			<LoginPage />
+			<RegisterPage /> */}
+				<Switch>
+					<Route exact path='/' component={HomePage} />
+					<Route exact path='/courses' component={CoursesPage} />
+					<Route exact path='/login' component={LoginPage} />
+					<Route exact path='/register' component={RegisterPage} />
+				</Switch>
+			</Container>
+		</>
 	);
 };
 

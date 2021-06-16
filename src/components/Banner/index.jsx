@@ -1,5 +1,6 @@
 import React from 'react';
 import { Jumbotron, Button, Row, Col } from 'react-bootstrap';
+import { Link } from 'react-router-dom';
 
 const Banner = ({ data }) => {
 	const { title, description, motto, label } = data;
@@ -12,7 +13,8 @@ const Banner = ({ data }) => {
 						<h1>{title}</h1>
 						<p>{description}</p>
 						<p>{motto}</p>
-						<Button variant='primary'>{label}</Button>
+
+						<Link to='/courses'>{label}</Link>
 					</Jumbotron>
 				</Col>
 			</Row>
