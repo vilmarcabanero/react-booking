@@ -1,4 +1,4 @@
-import * as api from 'store/api/courses';
+import * as api from 'redux/api/courses';
 import * as c from 'utils/constants.redux';
 
 export const getCourses = () => async dispatch => {

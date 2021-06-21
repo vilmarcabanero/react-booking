@@ -1,4 +1,4 @@
-import * as api from 'store/api/posts';
+import * as api from 'redux/api/posts';
 import * as c from 'utils/constants.redux';
 
 export const getPosts = () => async dispatch => {

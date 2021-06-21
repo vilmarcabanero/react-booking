@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { Switch, Route } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
-import { getCourses } from 'store/actions/courses';
-import { getPosts } from 'store/actions/posts';
+import { getCourses } from 'redux/actions/courses';
+import { getPosts } from 'redux/actions/posts';
 import Course from 'components/Course/index';
 // import Posts from 'components/Post'
 import courses from 'data/courses.data';
@@ -14,6 +14,7 @@ import HomePage from 'pages/home';
 import RegisterPage from 'pages/RegisterPage/index';
 import LoginPage from 'pages/LoginPage/index';
 import CoursesPage from 'pages/CoursesPage';
+import Logout from 'pages/logout';
 
 import { UserProvider } from 'context/user';
 
@@ -29,7 +30,6 @@ const App = () => {
 		dispatch(getPosts());
 	}, [dispatch]);
 
-
 	// useEffect(() => {
 	// 	setUserEmail(localStorage.getItem('email'));
 	// }, []);
@@ -43,8 +43,12 @@ const App = () => {
 
 	// console.log(user.isAdmin);
 
+	const unsetUser = () => {
+		localStorage.clear();
+	};
+
 	return (
-		<UserProvider value={{ user, setUser }}>
+		<UserProvider value={{ user, setUser, unsetUser }}>
 			<AppNavBarMUI />
 			{/* <AppNavBarBoot  /> */}
 			<Container>
@@ -57,6 +61,7 @@ const App = () => {
 
 					<Route exact path='/login' component={LoginPage} />
 					<Route exact path='/register' component={RegisterPage} />
+					<Route exact path='/logout' component={Logout} />
 				</Switch>
 			</Container>
 		</UserProvider>

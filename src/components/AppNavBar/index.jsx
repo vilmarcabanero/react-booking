@@ -21,13 +21,13 @@ const AppNavBar = () => {
 
 	const logout = () => {
 		localStorage.removeItem('token');
+		localStorage.removeItem('email');
+		localStorage.removeItem('isAdmin');
 		setWillRedirect(true);
 	};
 
 	console.log(user);
-	return willRedirect ? (
-		<Redirect to='/login' />
-	) : (
+	return (
 		<div className={classes.root}>
 			<AppBar position='static'>
 				<Toolbar>
@@ -49,7 +49,11 @@ const AppNavBar = () => {
 						Course Booking
 					</Nav.Link>
 
-					<Nav.Link as={NavLink} style={{ color: '#fff' }} to='/courses'>
+					<Nav.Link
+						as={NavLink}
+						style={{ color: '#fff' }}
+						to={user.email ? '/courses' : '/login'}
+					>
 						Courses
 					</Nav.Link>
 
@@ -66,9 +70,9 @@ const AppNavBar = () => {
 					)}
 
 					{!user.email ? null : (
-						<Button onClick={logout} style={{ color: '#fff' }}>
+						<Nav.Link as={NavLink} to='/logout' style={{ color: '#fff' }}>
 							Logout
-						</Button>
+						</Nav.Link>
 					)}
 				</Toolbar>
 			</AppBar>

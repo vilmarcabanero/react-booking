@@ -3,8 +3,9 @@ import React, { useState, useEffect, useContext } from 'react';
 import Course from 'components/Course';
 import { motion } from 'framer-motion';
 import { CircularProgress } from '@material-ui/core';
-import { Row, Col } from 'react-bootstrap';
+import { Row, Col, Table } from 'react-bootstrap';
 import UserContext from 'context/user';
+import CourseForm from 'components/CourseForm';
 
 const CoursesPage = () => {
 	// console.log(Course);
@@ -24,7 +25,7 @@ const CoursesPage = () => {
 			.catch(err => console.log(err));
 	};
 
-	const getAllAdminCourses = () => {
+	const getAllCourses = () => {
 		fetch(`${url}/courses`, {
 			headers: {
 				Authorization: `Bearer ${user.token}`,
@@ -40,21 +41,22 @@ const CoursesPage = () => {
 
 	useEffect(() => {
 		getActiveCourses();
+		getAllCourses();
 	}, []);
 
-	useEffect(() => {
-		fetch(`${url}/courses`, {
-			headers: {
-				Authorization: `Bearer ${user.token}`,
-			},
-		})
-			.then(res => res.json())
-			.then(data => {
-				setAllCourses(data);
-				console.log('Courses page line 54, data: ', data);
-			})
-			.catch(err => console.log(err));
-	}, []);
+	// useEffect(() => {
+	// 	fetch(`${url}/courses`, {
+	// 		headers: {
+	// 			Authorization: `Bearer ${user.token}`,
+	// 		},
+	// 	})
+	// 		.then(res => res.json())
+	// 		.then(data => {
+	// 			setAllCourses(data);
+	// 			console.log('Courses page line 54, data: ', data);
+	// 		})
+	// 		.catch(err => console.log(err));
+	// }, []);
 
 	// console.log(activeCourses);
 
@@ -73,7 +75,10 @@ const CoursesPage = () => {
 				{!user.isAdmin && <h2 className='text-center mb-0'>Courses </h2>}
 
 				{user.isAdmin && (
-					<h2 className='text-center mb-0'>Courses Dashboard</h2>
+					<div>
+						<h2 className='text-center mb-3'>Courses Dashboard</h2>
+						<CourseForm />
+					</div>
 				)}
 
 				{user.isAdmin ? (
@@ -87,11 +92,34 @@ const CoursesPage = () => {
 								}}
 							/>
 						) : (
-							allCourses.map(course => (
+							<div className='m-auto'>
+								{/* allCourses.map(course => (
 								<Col key={course._id} xs={12} md={4} className='mt-3'>
 									<Course course={course} id={course._id} />
 								</Col>
-							))
+							)) */}
+								<Table striped bordered hover className='mt-4'>
+									<thead>
+										<tr>
+											<th>ID</th>
+											<th>Name</th>
+											<th>Price</th>
+											<th>Status</th>
+										</tr>
+									</thead>
+
+									<tbody>
+										{allCourses.map(course => (
+											<tr key={course._id}>
+												<td>{course._id}</td>
+												<td>{course.name}</td>
+												<td>{course.price}</td>
+												<td>{course.isActive ? 'Active' : 'Inactive'}</td>
+											</tr>
+										))}
+									</tbody>
+								</Table>
+							</div>
 						)}
 					</Row>
 				) : (
